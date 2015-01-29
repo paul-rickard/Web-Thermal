@@ -104,7 +104,7 @@ imagepng($img,'save.png');
 /* Some Cleanup */
 imagedestroy($img);
 
-}
+
 
 
 
