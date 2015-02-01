@@ -9,8 +9,48 @@ Usage:
 */
 
 
+class PHPjpegExtract {
 
+	public $filename = "";
+	public $inDIR = "./";
+	public $outDIR = "";
+	public $MARKER = 0xFF;
+ 	public $SOI = 0xD8;
+ 	public $SOS = 0xDA;
+ 	public $EOI = 0xD9;
+ 	public $NULL = 0x00;
+	public $headers = array();
+	Public $RSTn = array();
+	public $has_marker = false;
+	public $has_SOI = false;
+	public $has_SOS = false;
+ 	public $has_header = false;
+	public $header_size_one = 0;
+	public $header_size_two = 0;
+	
 
+	function __construct(){
+	
+		$this->headers = unpack("C*", "\xC0\xC2\xC4\xDB\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xFE\xDD");
+		$this->RSTn = unpack("C*", "\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7");
+	
+	}
+	
+	
+	function readfilehex() {
+		
+		$fullLocation = $this->inDIR.$this->filename;
+		$handle = fopen($fullLocation, "rb");
+ 		$contents = fread($handle, filesize($fullLocation));
+ 		fclose($handle);
+		$hex = bin2hex($contents);
+		return $hex;
+
+	}
+
+	
+	
+}
 
 function PHPjpegExtract($filename="", $fileprefix="", $outdir="", $dir="./"){
 	
@@ -33,20 +73,7 @@ function PHPjpegExtract($filename="", $fileprefix="", $outdir="", $dir="./"){
 	}
 	
 	// JPEG file structure variables
-	$headers = unpack("C*", "\xC0\xC2\xC4\xDB\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xFE\xDD");
-	$RSTn = unpack("C*", "\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7");
- 	$MARKER = 0xFF;
- 	$SOI = 0xD8;
- 	$SOS = 0xDA;
- 	$EOI = 0xD9;
- 	$NULL = 0x00;
-
-    $has_marker = false;
-    $has_SOI = false;
-    $has_SOS = false;
-    $has_header = false;
-    $header_size_one = 0;
-    $header_size_two = 0;
+	
  	
  	var_dump($headers);
 
