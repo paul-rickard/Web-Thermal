@@ -11,14 +11,26 @@ Usage:
 
 
 
-function PHPjpegExtract($filename, $dir="./", $fileprefix=date('U'), $outdir=$filename){
+
+function PHPjpegExtract($filename="", $fileprefix="", $outdir="", $dir="./"){
 	
-	// CHeck for NULL filename
-	if(is_null($filename)) {
+	// Check for NULL filename
+	if($filename=="") {
 		echo "Error: No Input File Specified";
 		return;
 	}
 
+	// Check for NULL fileprefix
+	if($fileprefix=="") {
+		$fileprefix = date('U');
+		
+	}
+
+	// Check for NULL outdir
+	if($outdir=="") {
+		$outdir = "./".$fileprefix."./";
+		
+	}
 	
 	// JPEG file structure variables
 	$headers = unpack("C*", "\xC0\xC2\xC4\xDB\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xFE\xDD");
@@ -29,14 +41,26 @@ function PHPjpegExtract($filename, $dir="./", $fileprefix=date('U'), $outdir=$fi
  	$EOI = 0xD9;
  	$NULL = 0x00;
 
+    $has_marker = false;
+    $has_SOI = false;
+    $has_SOS = false;
+    $has_header = false;
+    $header_size_one = 0;
+    $header_size_two = 0;
+ 	
+ 	var_dump($headers);
+
  	// read file
- 	$handle = fopen($filename, "rb");
+ 	$handle = fopen($dir.$filename, "rb");
  	$contents = fread($handle, filesize($filename));
  	fclose($handle);
 
+ 	// Convert to Hex
+ 	$hex = bin2hex($contents);
+ 	
+
  	
 }
-
+PHPjpegExtract("readme.html");
 
 ?>
-
