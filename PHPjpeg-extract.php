@@ -44,11 +44,29 @@ class PHPjpegExtract {
  		$contents = fread($handle, filesize($fullLocation));
  		fclose($handle);
 		$hex = bin2hex($contents);
+		
+		// Used for Testing
+		var_dump($hex);
+		
 		return $hex;
 
 	}
 
+	function parse(){
+		// Run Readfilehex()
+		$hexString = $this->readfilehex();
+		
+		//Break hex string into bytes with : inbetween
+		$hexChunk = chunk_split($hexString, 2, ":");
+		
+		//explode around : into array
+		$hexArray = explode(":", $hexChunk);
+		
+		// Used for Testing
+		var_dump($hexArray);
+		
 	
+	}
 	
 }
 
